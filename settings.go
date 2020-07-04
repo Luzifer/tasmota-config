@@ -12,13 +12,16 @@ import (
 type settingExtractor func([]byte) (interface{}, error)
 
 var extractors = map[string]settingExtractor{
+	"currentcal": func(p []byte) (interface{}, error) { return extractFloatToInt("CurrentCal", p) },
 	"devicename": func(p []byte) (interface{}, error) { return extractGenericJSONValue("DeviceName", p) },
 	"ledstate":   func(p []byte) (interface{}, error) { return extractFloatToInt("LedState", p) },
 	"module":     extractModule,
 	"otaurl":     func(p []byte) (interface{}, error) { return extractGenericJSONValue("OtaUrl", p) },
+	"powercal":   func(p []byte) (interface{}, error) { return extractFloatToInt("PowerCal", p) },
 	"teleperiod": func(p []byte) (interface{}, error) { return extractFloatToInt("TelePeriod", p) },
 	"timezone":   func(p []byte) (interface{}, error) { return extractGenericJSONValue("Timezone", p) },
 	"topic":      func(p []byte) (interface{}, error) { return extractGenericJSONValue("Topic", p) },
+	"voltagecal": func(p []byte) (interface{}, error) { return extractFloatToInt("VoltageCal", p) },
 }
 
 func extractSettingValue(setting string, payloadChan chan []byte) (interface{}, error) {
