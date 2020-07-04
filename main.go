@@ -65,7 +65,7 @@ func main() {
 
 	for devName, devConfig := range config.Devices {
 		if cfg.Device != "" && devName != cfg.Device {
-			log.WithField("name", devName).Debug("Skipping device as requested")
+			log.WithField("name", devName).Trace("Skipping device as requested")
 			continue
 		}
 
@@ -77,7 +77,6 @@ func main() {
 
 func processDevice(mqttClient mqtt.Client, config *configFile, devName string, devConfig deviceConfig) error {
 	log.WithField("name", devName).Info("Starting device config")
-	defer log.WithField("name", devName).Info("Finished device config")
 
 	var (
 		responses = make(chan []byte, 30)
@@ -129,10 +128,11 @@ func processDevice(mqttClient mqtt.Client, config *configFile, devName string, d
 
 	if len(updates) == 0 {
 		log.WithField("name", devName).Info("Device looks good, nothing to do")
+		return nil
 	}
 
 	if cfg.DryRun {
-		log.WithField("name", devName).Info("Device needs updates but requested dry-run")
+		log.WithField("name", devName).Infof("Device needs %d updates but requested dry-run", len(updates))
 		return nil
 	}
 

@@ -51,6 +51,10 @@ func extractGenericJSONValue(setting string, payload []byte) (interface{}, error
 		return nil, errors.Wrap(err, "Unable to map payload into map[string]interface{}")
 	}
 
+	if _, ok := data[setting]; !ok {
+		return nil, errors.New("Unable to find requested value")
+	}
+
 	return data[setting], nil
 }
 
